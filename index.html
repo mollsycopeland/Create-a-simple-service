@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>User info form</title>
+  
+  <style>
+    /*simple styling to make the form look better*/
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-width: 300px;
+    }
+  </style>
+</head>
+<body>
+  <h2>Submit Your Info</h2>
+
+  <!-- this form collects user input -->
+  <form id="userForm">
+    <input type="text" name="name" placeholder="Name" required />
+    <input type="number" name="age" placeholder="Age" required />
+    <input type="text" name="favoriteColor" placeholder="Favorite Color" required />
+    <input type="text" name="hobby" placeholder="Hobby" required />
+    <button type="submit">Submit</button>
+  </form>
+
+  <script>
+    // grab the form element
+    const form = document.getElementById('userForm');
+
+    //when the form is submitted
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault(); //stop page from refreshing
+
+      
+      //cnvrt form inputs into an object
+      const formData = new FormData(form);
+      const data = Object.fromEntries(formData.entries());
+
+      
+      await fetch('/api/submissions', { //send data to the backend using a PUT request
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+
+      alert('Form submitted!');
+      form.reset(); // clear the form
+    });
+  </script>
+</body>
+</html>

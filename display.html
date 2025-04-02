@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>view submissions</title>
+  <style>
+    
+    table, th, td { /*basic table styling*/
+      border: 1px solid black;
+      border-collapse: collapse;
+    }
+    th, td {
+      padding: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h2>All submitted info</h2>
+
+  <!--table filled with JS-->
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Age</th>
+        <th>Fav Color</th>
+        <th>Hobby</th>
+      </tr>
+    </thead>
+    <tbody id="dataBody"></tbody>
+  </table>
+
+  <script>
+    //function to get data from the backennd
+    async function fetchData() {
+      const res = await fetch('/api/submissions');
+      const data = await res.json();
+
+      const tbody = document.getElementById('dataBody');
+      tbody.innerHTML = ''; //clears the existing data
+
+      //this will loop through each enttry and then add a row to the table
+      data.forEach(entry => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${entry.name}</td>
+          <td>${entry.age}</td>
+          <td>${entry.favoriteColor}</td>
+          <td>${entry.hobby}</td>
+        `;
+        tbody.appendChild(row);
+      });
+    }
+
+    
+    fetchData(); //load data when page loads
+  </script>
+</body>
+</html>
